@@ -1,0 +1,1 @@
+export { PubSub as NatsPubSub } from './PubSub'

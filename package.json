@@ -1,0 +1,41 @@
+{
+  "name": "subscriptions-transport-nats",
+  "version": "1.0.3",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "npm run integration",
+    "compile": "tsc",
+    "watch": "tsc -w",
+    "pretest": "npm run compile",
+    "prepublish": "npm run compile",
+    "integration": "npm run compile && mocha --compilers js:babel-core/register --reporter  spec --full-trace  ./dist/test/integration-tests.js "
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://igor-adlab:Adlab123@github.com/Igor-Adlab/subscriptions-transport-nats.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Igor-Adlab/subscriptions-transport-nats/issues"
+  },
+  "homepage": "https://github.com/Igor-Adlab/subscriptions-transport-nats#readme",
+  "dependencies": {
+    "@types/mocha": "^2.2.39",
+    "@types/node": "^7.0.5",
+    "async": "^2.1.4",
+    "babel-core": "^6.23.1",
+    "bunyan": "^1.8.5",
+    "cdm-logger": "^0.3.2",
+    "chai": "^3.5.0",
+    "chai-as-promised": "^6.0.0",
+    "graphql": "^0.9.1",
+    "graphql-subscriptions": "^0.3.0",
+    "lodash": "^4.17.4",
+    "nats": "^0.7.4"
+  },
+  "devDependencies": {
+    "mocha": "^3.2.0"
+  }
+}

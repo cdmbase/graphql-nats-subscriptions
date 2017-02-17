@@ -1,8 +1,26 @@
 {
     "compilerOptions": {
-        "module": "commonjs",
         "target": "es5",
+        "module": "commonjs",
+        "experimentalDecorators": true,
+        "declaration": true,
+        "removeComments": true,
         "noImplicitAny": false,
-        "sourceMap": false
-    }
+        "noLib": false,
+        "preserveConstEnums": false,
+        "moduleResolution": "node",
+        "sourceMap": true,
+        "rootDir": "./src",
+        "outDir": "./dist",
+        "allowSyntheticDefaultImports": true,
+        "pretty": true,
+        "lib": [
+            "es2015",
+            "es5"
+        ]
+    },
+    "exclude": [
+        "node_modules",
+        "dist"
+    ]
 }
