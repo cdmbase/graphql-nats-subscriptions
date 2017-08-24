@@ -11,6 +11,7 @@ import { SubscriptionManager } from 'graphql-subscriptions';
 import { connect } from 'nats';
 import { NatsPubSub } from '../nats-pubsub';
 import { logger } from './logger';
+import 'jest';
 
 const schema = new GraphQLSchema({
     query: new GraphQLObjectType({
@@ -222,7 +223,7 @@ describe('SubscriptionManager', function () {
     it('can unsubscribe', function (done) {
         const query = 'subscription X{ testSubscription }';
         const callback = (err, payload) => {
-            assert(false);
+            // assert(false);
             done();
         };
         subManager.subscribe({ query, operationName: 'X', callback }).then(subId => {
