@@ -134,6 +134,15 @@ describe('SubscriptionManager', function () {
         });
     });
 
+    it('can subscribe with a nameless query and gets a subId back', function () {
+        const query = 'subscription { testSubscription }';
+        const callback = () => null;
+        subManager.subscribe({ query, operationName: 'X', callback }).then(subId => {
+            expect(typeof subId).toBe('number');
+            subManager.unsubscribe(subId);
+        });
+    });
+
     it('can subscribe with a valid query and get the root value', (done) => {
         const query = 'subscription X{ testSubscription}';
         const callback = function (err, payload) {
@@ -187,6 +196,34 @@ describe('SubscriptionManager', function () {
             setTimeout(() => {
                 subManager.unsubscribe(subId);
             }, 20);
+        });
+    });
+    it('can use a filter function that returns a promise', function (done) {
+        const query = `subscription Filter2($filterBoolean: Boolean){
+       testFilter(filterBoolean: $filterBoolean)
+      }`;
+        const callback = function (err, payload) {
+            if (err) {
+                done.fail(err);
+                return;
+            }
+            try {
+                expect(payload.data.testFilter).toBe('goodFilter');
+            } catch (e) {
+                done.fail(e);
+                return;
+            }
+            done();
+        };
+        subManager.subscribe({
+            query,
+            operationName: 'Filter2',
+            variables: { filterBoolean: true },
+            callback,
+        }).then(subId => {
+            subManager.publish('Filter2', { filterBoolean: false });
+            subManager.publish('Filter2', { filterBoolean: true });
+            subManager.unsubscribe(subId);
         });
     });
     it('can subscribe to more than one trigger', function (done) {
@@ -301,3 +338,4 @@ describe('SubscriptionManager', function () {
 
     });
 });
+

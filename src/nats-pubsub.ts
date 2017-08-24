@@ -73,7 +73,7 @@ export class NatsPubSub implements PubSubEngine {
     }
 
     public publish(trigger: string, payload: any): boolean {
-        this.logger && this.logger.trace("publishing for queue '%s' (%j)",
+        this.logger.trace("publishing to queue '%s' (%j)",
             trigger, payload);
         const message = Buffer.from(JSON.stringify(payload), this.parseMessageWithEncoding);
         this.natsConnection.publish(trigger, message);
@@ -81,7 +81,7 @@ export class NatsPubSub implements PubSubEngine {
     }
 
     public subscribe(trigger: string, onMessage: Function, options?: object): Promise<number> {
-        this.logger && this.logger.trace("subscribing to queue '%s' with onMessage (%j), and options (%j) ",
+        this.logger.trace("subscribing to queue '%s' with onMessage (%j), and options (%j) ",
             trigger, onMessage, options);
 
         const triggerName: string = this.triggerTransform(trigger, options);
@@ -90,13 +90,13 @@ export class NatsPubSub implements PubSubEngine {
 
         let refs = this.subsRefsMap[triggerName];
         if (refs && refs.length > 0) {
-            this.logger.trace('refs already exist calling it (%j)', refs);
+            this.logger.trace('relavent topic (%s) is already subscribed', triggerName);
             const newRefs = [...refs, id];
             this.subsRefsMap[triggerName] = newRefs;
-            this.logger.trace('returing subId (%s)', id);
             return Promise.resolve(id);
         } else {
             return new Promise<number>((resolve, reject) => {
+                this.logger.trace('topic (%s) is new and yet to be subscribed', triggerName);
                 // 1. Resolve options object
                 this.subscribeOptionsResolver(trigger, options).then(subscriptionOptions => {
                     this.logger.trace('resolve subscriptionoptions with options (%j)', options);
@@ -112,31 +112,32 @@ export class NatsPubSub implements PubSubEngine {
 
     public unsubscribe(subId: number) {
         const [triggerName = null] = this.subscriptionMap[subId] || [];
-        this.logger.trace('dumping saved subsMappers (%j)', this.subsRefsMap);
         const refs = this.subsRefsMap[triggerName];
         const natsSubId = this.natsSubMap[triggerName];
-        this.logger && this.logger.trace("unsubscribing to queue '%s' and natsSid: (%s)", subId, natsSubId);
+        this.logger.trace("unsubscribing to queue '%s' and natsSid: (%s)", subId, natsSubId);
         if (!refs) {
             this.logger.error('there are no subscriptions for triggerName (%s) and natsSid (%s)', triggerName, natsSubId);
             throw new Error(`There is no subscription of id "${subId}"`);
         }
         if (refs.length === 1) {
-            this.logger.trace("unsubscribing and there won't be any subscriber");
             this.natsConnection.unsubscribe(natsSubId);
             delete this.natsSubMap[triggerName];
             delete this.subsRefsMap[triggerName];
-            this.logger.trace('unsubscribe on nats for subId (%s) is completed', natsSubId);
+            this.logger.trace('unsubscribe on nats for subId (%s) is completed and there is no subscriber to topic (%s)',
+                natsSubId, triggerName);
         } else {
             const index = refs.indexOf(subId);
             const newRefs = index === -1 ? refs : [...refs.slice(0, index), ...refs.slice(index + 1)];
             this.subsRefsMap[triggerName] = newRefs;
+            this.logger.trace('unsubscribe on nats for subId (%s) is completed and there are still (%s) subscribers', newRefs.length);
         }
 
         delete this.subscriptionMap[subId];
     }
 
     public asyncIterator<T>(triggers: string | string[]): AsyncIterator<T> {
-        return new PubSubAsyncIterator<T>(this, triggers);
+        this.logger.trace('asyncIterator called with trigger (%j)', triggers);
+        return new PubSubAsyncIterator<T>(this, triggers, this.logger);
     }
 
     private onMessage(topic: string, message: Buffer) {
@@ -158,6 +159,7 @@ export class NatsPubSub implements PubSubEngine {
 
         for (const subId of subscribers) {
             const listener = this.subscriptionMap[subId][1];
+            this.logger.trace('subscription listener to run for subId (%s) and listener (%j)', subId, listener);
             listener(parsedMessage);
         }
     }

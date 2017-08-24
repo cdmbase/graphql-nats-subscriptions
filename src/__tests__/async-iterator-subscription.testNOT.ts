@@ -57,7 +57,7 @@ describe('GraphQL-JS asyncIterator', () => {
         const results = subscribe(schema, query);
         const payload1 = results.next();
 
-        expect(isAsyncIterable(results)).toBeTruthy;
+        expect(isAsyncIterable(results)).toBeTruthy();
 
         const r = payload1.then(res => {
             expect(res.value.data.testSubscription).toEqual('FIRST_EVENT');
