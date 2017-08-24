@@ -1,6 +1,6 @@
 {
-  "name": "subscriptions-transport-nats",
-  "version": "1.0.5",
+  "name": "graphql-nats-subscriptions",
+  "version": "1.0.6",
   "description": "",
   "main": "dist/index.js",
   "scripts": {

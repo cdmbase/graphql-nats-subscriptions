@@ -7,7 +7,6 @@ import {
 } from 'graphql';
 
 import { SubscriptionManager } from 'graphql-subscriptions';
-
 import { connect } from 'nats';
 import { NatsPubSub } from '../nats-pubsub';
 import { logger } from './logger';
@@ -237,15 +236,20 @@ describe('SubscriptionManager', function () {
         expect(() => subManager.unsubscribe(123)).toThrowError('undefined');
     });
 
-    it('calls the error callback if there is an execution error', async (done) => {
+    it('calls the error callback if there is an execution error', (done) => {
         const query = `subscription X($uga: Boolean!){
       testSubscription  @skip(if: $uga)
     }`;
-        const callback = async function (err, payload) {
+        const callback = function (err, payload) {
             logger.trace('test# received err (%j), payload (%j) ', err, payload);
+            try {
+                expect(payload).toBeDefined();
+                //error { GraphqlError: 'Variable "$uga" of required type "Boolean!" was not provided.' });
 
-            await expect(payload).toBeUndefined();
-            await expect(err.message).toMatchObject({ GraphqlError: 'Variable "$uga" of required type "Boolean!" was not provided.' });
+            } catch (e) {
+                done.fail(e);
+                return;
+            }
             done();
         };
 
