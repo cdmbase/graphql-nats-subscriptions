@@ -50,5 +50,39 @@ describe('AsyncIterator', () => {
         });
         ps.publish(eventName, { test: true });
     });
-});
 
+    it('should not trigger event on asyncIterator already returned', done => {
+        const eventName = 'test5';
+        const ps = new NatsPubSub({ logger });
+        const iterator = ps.asyncIterator(eventName);
+
+        iterator.next().then(result => {
+            customLogger.trace('result: (%j)', result);
+
+            try {
+                expect(result).toBeDefined();
+                expect(result.value).toBeDefined();
+                expect(result.done).toBeFalsy();
+            } catch (e) {
+                done.fail(e);
+            }
+        });
+
+        ps.publish(eventName, { test: true });
+
+        iterator.next().then(result => {
+            customLogger.trace('result: (%j)', result);
+            try {
+                expect(result).toBeDefined();
+                expect(result.value).not.toBeDefined();
+                expect(result.done).toBeTruthy();
+                done();
+            } catch (e) {
+                done.fail(e);
+            }
+        });
+
+        iterator.return();
+        ps.publish(eventName, { test: true });
+    });
+});
