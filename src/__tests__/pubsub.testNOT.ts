@@ -1,8 +1,8 @@
-// import { NatsPubSub } from '../nats-pubsub';
-// import { spy, restore } from 'simple-mock';
-// import nats from 'nats';
-// import { logger } from './logger';
-// import 'jest';
+import { NatsPubSub } from '../nats-pubsub';
+import { spy, restore } from 'simple-mock';
+import nats from 'nats';
+import { logger } from './logger';
+import 'jest';
 
 
 // // ----------------- Mocking NATS Client ----------------------
