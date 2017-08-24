@@ -4,10 +4,12 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "test": "npm run integration",
+    "jest": "./node_modules/.bin/jest",
+    "test": "jest",
+    "test:debug": "npm test -- --runInBand",
+    "test:watch": "npm test -- --watch",
     "compile": "tsc",
     "watch": "tsc -w",
-    "pretest": "npm run compile",
     "prepublish": "npm run compile",
     "integration": "npm run compile && mocha --compilers js:babel-core/register --reporter  spec --full-trace  ./dist/test/integration-tests.js "
   },
@@ -21,21 +23,40 @@
     "url": "https://github.com/Igor-Adlab/subscriptions-transport-nats/issues"
   },
   "homepage": "https://github.com/Igor-Adlab/subscriptions-transport-nats#readme",
+  "jest": {
+    "testEnvironment": "node",
+    "roots": [
+      "src"
+    ],
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ],
+    "transform": {
+      "\\.(ts|tsx)$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    },
+    "testRegex": "/__tests__/.*test*\\.(ts|tsx|js)$"
+  },
   "dependencies": {
-    "@types/mocha": "^2.2.39",
-    "@types/node": "^7.0.5",
-    "async": "^2.1.4",
-    "babel-core": "^6.23.1",
-    "bunyan": "^1.8.5",
-    "cdm-logger": "^0.3.2",
-    "chai": "^3.5.0",
-    "chai-as-promised": "^6.0.0",
-    "graphql": "^0.9.1",
-    "graphql-subscriptions": "^0.3.0",
+    "graphql-subscriptions": "^0.4.4",
     "lodash": "^4.17.4",
-    "nats": "^0.7.4"
+    "nats": "^0.7.20"
   },
   "devDependencies": {
-    "mocha": "^3.2.0"
+    "@cdm-logger/server": "^3.0.2",
+    "@types/bunyan": "^1.8.0",
+    "@types/graphql": "^0.10.0",
+    "@types/jest": "^20.0.7",
+    "@types/node": "^8.0.0",
+    "graphql": "^0.10.5",
+    "iterall": "^1.1.1",
+    "jest": "^20.0.4",
+    "jest-cli": "^20.0.4",
+    "simple-mock": "^0.8.0",
+    "ts-jest": "^20.0.10",
+    "ts-node": "^3.3.0",
+    "tslint": "^5.2.0",
+    "typescript": "2.3.4"
   }
 }

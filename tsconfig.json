@@ -15,8 +15,8 @@
         "allowSyntheticDefaultImports": true,
         "pretty": true,
         "lib": [
-            "es2015",
-            "es5"
+            "es2017",
+            "esnext.asynciterable"
         ]
     },
     "exclude": [
