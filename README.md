@@ -3,7 +3,7 @@
 This package implements the PusSubEngine Interface from the graphql-subscriptions package. 
 It allows you to connect your subscriptions manger to an NATS enabled Pub Sub broker to support 
 horizontally scalable subscriptions setup.
-This package is an adapted version of my [graphql-redis-subscriptions](https://github.com/davidyaha/graphql-redis-subscriptions) package.
+This package is an adapted version of [graphql-redis-subscriptions](https://github.com/davidyaha/graphql-redis-subscriptions) package.
    
    
 ## Basic Usage
