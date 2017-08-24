@@ -9,19 +9,18 @@
     "test:debug": "npm test -- --runInBand",
     "test:watch": "npm test -- --watch",
     "compile": "tsc",
-    "watch": "tsc -w",
-    "prepublish": "npm run compile"
+    "watch": "tsc -w"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://igor-adlab:Adlab123@github.com/Igor-Adlab/subscriptions-transport-nats.git"
+    "url": "git+https://github.com/cdmbase/graphql-nats-subscriptions.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Igor-Adlab/subscriptions-transport-nats/issues"
+    "url": "https://github.com/cdmbase/graphql-nats-subscriptions/issues"
   },
-  "homepage": "https://github.com/Igor-Adlab/subscriptions-transport-nats#readme",
+  "homepage": "https://github.com/cdmbase/graphql-nats-subscriptions#readme",
   "jest": {
     "testEnvironment": "node",
     "roots": [
