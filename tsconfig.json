@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "target": "es5",
+        "target": "es6",
         "module": "commonjs",
         "experimentalDecorators": true,
         "declaration": true,
@@ -9,7 +9,8 @@
         "noLib": false,
         "preserveConstEnums": false,
         "moduleResolution": "node",
-        "sourceMap": true,
+        // "sourceMap": true,
+        "inlineSourceMap": true,
         "rootDir": "./src",
         "outDir": "./dist",
         "allowSyntheticDefaultImports": true,

@@ -8,7 +8,9 @@
     "test": "jest",
     "test:debug": "npm test -- --runInBand",
     "test:watch": "npm test -- --watch",
-    "compile": "tsc",
+    "build": "tsc",
+    "build:debug": "tsc --pretty",
+    "build:prod": "tsc",
     "watch": "tsc -w"
   },
   "repository": {

@@ -19,10 +19,15 @@ describe('AsyncIterator', () => {
 
         iterator.next().then(result => {
             customLogger.trace('result: (%j)', result);
-            expect(result).toBeDefined();
-            expect(result.value).toBeDefined();
-            expect(result.done).toBeDefined();
-            done();
+            try {
+                expect(result).toBeDefined();
+                expect(result.value).toBeDefined();
+                expect(result.done).toBeDefined();
+                done();
+            } catch (e) {
+                done.fail(e);
+            }
+
         });
         ps.publish(eventName, { test: true });
     });

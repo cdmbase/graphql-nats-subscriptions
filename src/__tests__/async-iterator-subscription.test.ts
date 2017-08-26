@@ -7,7 +7,7 @@ import {
     GraphQLObjectType,
     GraphQLString,
 } from 'graphql';
-import { withFilter } from '../with-filter';
+import { withFilter } from 'graphql-subscriptions';
 import { subscribe } from 'graphql/subscription';
 import { logger } from './logger';
 
@@ -50,10 +50,11 @@ describe('GraphQL-JS asyncIterator', () => {
             testSubscription
             }
     `);
-        const pubsub = new NatsPubSub({logger});
+        const pubsub = new NatsPubSub({ logger });
         const origIterator = pubsub.asyncIterator(FIRST_EVENT);
-        const schema = buildSchema(origIterator);
+        const orig2Iterator = pubsub.asyncIterator('TEST123');
 
+        const schema = buildSchema(origIterator);
         const results = subscribe(schema, query);
         const payload1 = results.next();
 
@@ -63,7 +64,7 @@ describe('GraphQL-JS asyncIterator', () => {
             expect(res.value.data.testSubscription).toEqual('FIRST_EVENT');
         });
 
-        pubsub.publish(FIRST_EVENT, {});
+        pubsub.publish(FIRST_EVENT, { test: { file: true } });
 
         return r;
     });
@@ -75,7 +76,7 @@ describe('GraphQL-JS asyncIterator', () => {
         }
         `);
 
-        const pubsub = new NatsPubSub({logger});
+        const pubsub = new NatsPubSub({ logger });
         const origIterator = pubsub.asyncIterator(FIRST_EVENT);
 
         let counter = 0;
@@ -113,7 +114,7 @@ describe('GraphQL-JS asyncIterator', () => {
         }
         `);
 
-        const pubsub = new NatsPubSub({logger});
+        const pubsub = new NatsPubSub({ logger });
         const origIterator = pubsub.asyncIterator(FIRST_EVENT);
         const returnSpy = jest.spyOn(origIterator, 'return');
         const schema = buildSchema(origIterator);
