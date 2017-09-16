@@ -18,6 +18,7 @@ const subscriptionManager = new SubscriptionManager({
 });
 ```
 
+You needs nats running in background. Check out https://nats.io to start on your machine. 
 ## Using Trigger Transform
 
 As the [graphql-redis-subscriptions](https://github.com/davidyaha/graphql-redis-subscriptions) package, this package support
