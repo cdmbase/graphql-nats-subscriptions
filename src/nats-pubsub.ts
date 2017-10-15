@@ -80,7 +80,7 @@ export class NatsPubSub implements PubSubEngine {
         return true;
     }
 
-    public subscribe(trigger: string, onMessage: Function, options?: object): Promise<number> {
+    public async subscribe(trigger: string, onMessage: Function, options?: object): Promise<number> {
         this.logger.trace("subscribing to queue '%s' with onMessage (%j), and options (%j) ",
             trigger, onMessage, options);
 
@@ -93,20 +93,21 @@ export class NatsPubSub implements PubSubEngine {
             this.logger.trace('relavent topic (%s) is already subscribed', triggerName);
             const newRefs = [...refs, id];
             this.subsRefsMap[triggerName] = newRefs;
-            return Promise.resolve(id);
+            return await id;
         } else {
-            return new Promise<number>((resolve, reject) => {
+            // return new Promise<number>((resolve, reject) => {
                 this.logger.trace('topic (%s) is new and yet to be subscribed', triggerName);
                 // 1. Resolve options object
-                this.subscribeOptionsResolver(trigger, options).then(subscriptionOptions => {
+                // this.subscribeOptionsResolver(trigger, options).then(subscriptionOptions => {
                     this.logger.trace('resolve subscriptionoptions with options (%j)', options);
                     // 2. Subscribing using NATS
                     const subId = this.natsConnection.subscribe(triggerName, (msg) => this.onMessage(triggerName, msg));
                     this.subsRefsMap[triggerName] = [...(this.subsRefsMap[triggerName] || []), id];
                     this.natsSubMap[triggerName] = subId;
-                    resolve(id);
-                });
-            });
+                    return await id;
+                // });
+            // });
+
         }
     }
 
@@ -159,7 +160,7 @@ export class NatsPubSub implements PubSubEngine {
 
         for (const subId of subscribers) {
             const listener = this.subscriptionMap[subId][1];
-            this.logger.trace('subscription listener to run for subId (%s) and listener (%j)', subId, listener);
+            this.logger.trace('subscription listener to run for subId (%s)', subId);
             listener(parsedMessage);
         }
     }

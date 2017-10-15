@@ -5,7 +5,7 @@ import {
     parse,
     GraphQLSchema,
     GraphQLObjectType,
-    GraphQLString,
+    GraphQLString, ExecutionResult,
 } from 'graphql';
 import { withFilter } from 'graphql-subscriptions';
 import { subscribe } from 'graphql/subscription';
@@ -55,7 +55,7 @@ describe('GraphQL-JS asyncIterator', () => {
         const orig2Iterator = pubsub.asyncIterator('TEST123');
 
         const schema = buildSchema(origIterator);
-        const results = subscribe(schema, query);
+        const results: AsyncIterator<ExecutionResult> = subscribe(schema, query);
         const payload1 = results.next();
 
         expect(isAsyncIterable(results)).toBeTruthy();
