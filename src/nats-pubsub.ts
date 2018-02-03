@@ -1,4 +1,4 @@
-import { PubSubEngine } from 'graphql-subscriptions/dist/pubsub-engine';
+import { PubSubEngine } from 'graphql-subscriptions';
 import { connect, Client, ClientOpts, SubscribeOptions, NatsError } from 'nats';
 import { PubSubAsyncIterator } from './pubsub-async-iterator';
 import * as Logger from 'bunyan';

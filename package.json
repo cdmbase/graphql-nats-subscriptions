@@ -39,7 +39,7 @@
     "testRegex": "/__tests__/.*test*\\.(ts|tsx|js)$"
   },
   "dependencies": {
-    "graphql-subscriptions": "^0.5.4",
+    "graphql-subscriptions": "^0.5.6",
     "lodash": "^4.17.4",
     "nats": "^0.7.20"
   },
