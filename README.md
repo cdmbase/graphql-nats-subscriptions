@@ -3,7 +3,7 @@
 This package implements the PusSubEngine Interface from the graphql-subscriptions package. 
 It allows you to connect your subscriptions manger to an NATS enabled Pub Sub broker to support 
 horizontally scalable subscriptions setup.
-This package is an adapted version of my [graphql-redis-subscriptions](https://github.com/davidyaha/graphql-redis-subscriptions) package.
+This package is an adapted version of [graphql-redis-subscriptions](https://github.com/davidyaha/graphql-redis-subscriptions) package.
    
    
 ## Basic Usage
@@ -18,6 +18,7 @@ const subscriptionManager = new SubscriptionManager({
 });
 ```
 
+You needs `gnatsd daemon` running in background. Check out https://nats.io to start on your machine. 
 ## Using Trigger Transform
 
 As the [graphql-redis-subscriptions](https://github.com/davidyaha/graphql-redis-subscriptions) package, this package support
