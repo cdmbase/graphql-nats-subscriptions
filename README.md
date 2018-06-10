@@ -99,3 +99,6 @@ const pubsub = new NatsPubSub({
   parseMessageWithEncoding: 'utf16le',
 });
 ```
+### License
+
+ssh-keygen is [open source](https://github.com/cdmbase/graphql-nats-subscriptions/blob/master/LICENSE.md) under the MIT license
