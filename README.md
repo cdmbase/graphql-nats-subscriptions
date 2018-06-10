@@ -101,4 +101,4 @@ const pubsub = new NatsPubSub({
 ```
 ### License
 
-ssh-keygen is [open source](https://github.com/cdmbase/graphql-nats-subscriptions/blob/master/LICENSE.md) under the MIT license
+graphql-nats-subscriptions is [open source](https://github.com/cdmbase/graphql-nats-subscriptions/blob/master/LICENSE.md) under the MIT license
