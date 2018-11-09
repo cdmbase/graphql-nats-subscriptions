@@ -72,12 +72,11 @@ export class NatsPubSub implements PubSubEngine {
         this.parseMessageWithEncoding = options.parseMessageWithEncoding;
     }
 
-    public publish(trigger: string, payload: any): boolean {
+    public async publish(trigger: string, payload: any): Promise<void> {
         this.logger.trace("publishing to queue '%s' (%j)",
             trigger, payload);
         const message = Buffer.from(JSON.stringify(payload), this.parseMessageWithEncoding);
-        this.natsConnection.publish(trigger, message);
-        return true;
+        await this.natsConnection.publish(trigger, message);
     }
 
     public async subscribe(trigger: string, onMessage: Function, options?: object): Promise<number> {
@@ -96,16 +95,16 @@ export class NatsPubSub implements PubSubEngine {
             return await id;
         } else {
             // return new Promise<number>((resolve, reject) => {
-                this.logger.trace('topic (%s) is new and yet to be subscribed', triggerName);
-                // 1. Resolve options object
-                // this.subscribeOptionsResolver(trigger, options).then(subscriptionOptions => {
-                    this.logger.trace('resolve subscriptionoptions with options (%j)', options);
-                    // 2. Subscribing using NATS
-                    const subId = this.natsConnection.subscribe(triggerName, (msg) => this.onMessage(triggerName, msg));
-                    this.subsRefsMap[triggerName] = [...(this.subsRefsMap[triggerName] || []), id];
-                    this.natsSubMap[triggerName] = subId;
-                    return await id;
-                // });
+            this.logger.trace('topic (%s) is new and yet to be subscribed', triggerName);
+            // 1. Resolve options object
+            // this.subscribeOptionsResolver(trigger, options).then(subscriptionOptions => {
+            this.logger.trace('resolve subscriptionoptions with options (%j)', options);
+            // 2. Subscribing using NATS
+            const subId = this.natsConnection.subscribe(triggerName, (msg) => this.onMessage(triggerName, msg));
+            this.subsRefsMap[triggerName] = [...(this.subsRefsMap[triggerName] || []), id];
+            this.natsSubMap[triggerName] = subId;
+            return await id;
+            // });
             // });
 
         }
