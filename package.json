@@ -1,6 +1,6 @@
 {
   "name": "graphql-nats-subscriptions",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -39,12 +39,11 @@
     "testRegex": "/__tests__/.*test*\\.(ts|tsx|js)$"
   },
   "dependencies": {
-    "lodash": "^4.0.0",
-    "nats": "^1.2.10"
+    "lodash": "^4.0.0"
   },
   "peerDependencies": {
     "graphql-subscriptions": "^1.1.0",
-    "nats": ">=0.8.0"
+    "nats": ">=1.2.0"
   },
   "devDependencies": {
     "@cdm-logger/server": "^5.0.5",
@@ -54,6 +53,7 @@
     "@types/node": "11.13.1",
     "graphql": "^14.0.0",
     "graphql-subscriptions": "^1.1.0",
+    "nats": "^1.2.10",
     "iterall": "^1.2.2",
     "jest": "^21.2.1",
     "jest-cli": "^21.2.1",
