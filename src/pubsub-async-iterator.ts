@@ -81,7 +81,7 @@ export class PubSubAsyncIterator<T> implements AsyncIterator<T> {
       this.pullQueue.shift()({ value: event, done: false });
     } else {
       this.pushQueue.push(event);
-      this.logger.trace('push event (%j) to pushQueue (%j)', event, this.pullQueue);      
+      this.logger.trace('push event (%j) to pushQueue (%j)', event, this.pullQueue);
     }
   }
 

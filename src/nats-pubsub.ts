@@ -18,7 +18,7 @@ export interface NatsPubSubOptions {
     connectionListener?: (err: Error) => void;
     // onNatsSubscribe?: (id: number, granted: ISubscriptionGrant[]) => void;
     triggerTransform?: TriggerTransform;
-    parseMessageWithEncoding?: string;
+    parseMessageWithEncoding?: BufferEncoding;
     logger?: Logger;
 }
 
@@ -36,7 +36,6 @@ export class NatsPubSub implements PubSubEngine {
     // { [topic]: { natsSid }}
     private natsSubMap: { [trigger: string]: number };
     private currentSubscriptionId: number;
-    private parseMessageWithEncoding: string;
     private logger: Logger;
 
     public constructor(options: NatsPubSubOptions = {}) {
@@ -69,13 +68,12 @@ export class NatsPubSub implements PubSubEngine {
         // this.onNatsSubscribe = options.onNatsSubscribe || (() => null);
         this.publishOptionsResolver = options.publishOptions || (() => Promise.resolve({}));
         this.subscribeOptionsResolver = options.subscribeOptions || (() => Promise.resolve({}));
-        this.parseMessageWithEncoding = options.parseMessageWithEncoding;
     }
 
     public async publish(trigger: string, payload: any): Promise<void> {
         this.logger.trace("publishing to queue '%s' (%j)",
             trigger, payload);
-        const message = Buffer.from(JSON.stringify(payload), this.parseMessageWithEncoding);
+        const message = JSON.stringify(payload);
         await this.natsConnection.publish(trigger, message);
     }
 
@@ -140,7 +138,7 @@ export class NatsPubSub implements PubSubEngine {
         return new PubSubAsyncIterator<T>(this, triggers, this.logger);
     }
 
-    private onMessage(topic: string, message: Buffer) {
+    private onMessage(topic: string, message: string) {
         this.logger.trace('triggered onMessage with topic (%s), message (%j)', topic, message);
         const subscribers = this.subsRefsMap[topic];
 
@@ -149,12 +147,21 @@ export class NatsPubSub implements PubSubEngine {
             return;
         }
 
-        const messageString = message.toString(this.parseMessageWithEncoding);
+        // for example a client could inject a bogus `toString` property
+        // which could cause your client to crash should you try to
+        // concatenation with the `+` like this:
+        // console.log("received", msg + "here");
+        // `TypeError: Cannot convert object to primitive value`
+        // Note that simple `console.log(msg)` is fine.
+        if (message.hasOwnProperty('toString')) {
+            console.warn('not suppose to have `toString` in payload, which likely trying to crash the server', message.toString);
+            return;
+        }
         let parsedMessage;
         try {
-            parsedMessage = JSON.parse(messageString);
+            parsedMessage = JSON.parse(message);
         } catch (e) {
-            parsedMessage = messageString;
+            parsedMessage = message;
         }
 
         for (const subId of subscribers) {
