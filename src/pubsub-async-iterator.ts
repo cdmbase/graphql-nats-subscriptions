@@ -1,6 +1,7 @@
 import { $$asyncIterator } from 'iterall';
 import { PubSubEngine } from 'graphql-subscriptions';
-import * as Logger from 'bunyan';
+import { CdmLogger } from '@cdm-logger/core';
+type Logger = CdmLogger.ILogger;
 /**
  * A class for digesting PubSubEngine events via the new AsyncIterator interface.
  * This implementation is a generic version of the one located at

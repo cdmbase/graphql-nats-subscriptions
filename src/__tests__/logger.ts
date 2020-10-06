@@ -1,6 +1,7 @@
 
 import { ConsoleLogger, IConsoleLoggerSettings } from '@cdm-logger/server';
-import * as Logger from 'bunyan';
+import { CdmLogger } from '@cdm-logger/core';
+type Logger = CdmLogger.ILogger;
 
 const settings: IConsoleLoggerSettings = {
     level: 'trace',

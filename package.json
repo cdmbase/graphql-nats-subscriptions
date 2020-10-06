@@ -1,6 +1,6 @@
 {
   "name": "graphql-nats-subscriptions",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -42,12 +42,12 @@
     "lodash": "^4.0.0"
   },
   "peerDependencies": {
+    "@cdm-logger/core": "^6.0.0",
     "graphql-subscriptions": "^1.1.0",
     "nats": ">=1.2.0"
   },
   "devDependencies": {
-    "@cdm-logger/server": "^5.0.5",
-    "@types/bunyan": "^1.8.3",
+    "@cdm-logger/server": "^6.0.0",
     "@types/graphql": "^14.2.0",
     "@types/jest": "^21.1.2",
     "@types/node": "11.13.1",

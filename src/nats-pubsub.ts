@@ -1,9 +1,9 @@
 import { PubSubEngine } from 'graphql-subscriptions';
 import { connect, Client, ClientOpts, SubscribeOptions, NatsError } from 'nats';
 import { PubSubAsyncIterator } from './pubsub-async-iterator';
-import * as Logger from 'bunyan';
 import _ from 'lodash';
-
+import { CdmLogger } from '@cdm-logger/core';
+type Logger = CdmLogger.ILogger;
 
 export type Path = Array<string | number>;
 export type Trigger = string | Path;
